@@ -724,9 +724,10 @@ def draw_basemap(fig, ax, lonsize, latsize, interval_lon=0.5, interval_lat=0.5):
 
 ''' initialize constants'''
 drifter_ids = ['110410711','139410701','138410701','135410701','110410713','118410701']
-
 depth = -1
 days = .25
+lat_incr = .1                                                                # Longitude increments displayed on the plot
+lon_incr = .1                                                                # Longitude increments displayed on the plot
 starttime = datetime(2011,5,12,13,0,0,0,pytz.UTC)
 
 for ID in drifter_ids:
@@ -771,7 +772,7 @@ for ID in drifter_ids:
 
     dist_roms = distance((nodes_drifter['lat'][-1],nodes_drifter['lon'][-1]),(nodes_roms['lat'][-1],nodes_roms['lon'][-1]))
     dist_fvcom = distance((nodes_drifter['lat'][-1],nodes_drifter['lon'][-1]),(nodes_fvcom['lat'][-1],nodes_fvcom['lon'][-1]))
-    print 'The seperation of roms was %f and of fvcom was %f kilometers for drifter %s' % (dist_roms[0], dist_fvcom[0], ID )
+    print 'The seperation of roms was %f and of fvcom was %f kilometers from drifter %s' % (dist_roms[0], dist_fvcom[0], ID )
 
     ''' set latitude and longitude arrays for basemap'''
 
@@ -780,15 +781,8 @@ for ID in drifter_ids:
     latsize = [min_data(nodes_drifter['lat'],nodes_fvcom['lat']),
              max_data(nodes_drifter['lat'],nodes_fvcom['lat'])]
     
-    if days < 1:
-         
-        diff_lon = (lonsize[0]-lonsize[1])*2   
-        diff_lat = (latsize[1]-latsize[0])*2      
-    
-    else:
-    
-        diff_lon = .2
-        diff_lat = .2
+    diff_lon = .1
+    diff_lat = .1
         
     lonsize = [lonsize[0]-diff_lon,lonsize[1]+diff_lon]
     latsize = [latsize[0]-diff_lat,latsize[1]+diff_lat]
@@ -797,7 +791,7 @@ for ID in drifter_ids:
       
     fig = plt.figure()
     ax = fig.add_subplot(111)
-    draw_basemap(fig, ax, lonsize, latsize)
+    draw_basemap(fig, ax, lonsize, latsize, lon_incr, lat_incr)
     ax.plot(nodes_drifter['lon'],nodes_drifter['lat'],'ro-',label='drifter')
     ax.plot(nodes_fvcom['lon'],nodes_fvcom['lat'],'yo-',label='fvcom')
     ax.plot(nodes_roms['lon'],nodes_roms['lat'], 'go-', label='roms')
@@ -806,6 +800,6 @@ for ID in drifter_ids:
     plt.legend(loc='lower right')
     plt.xlabel('Longitude')
     plt.ylabel('Latitude')
-    #plt.show()
+    plt.show()
     plt.savefig('plots/'+str(ID)+'.png')
     
