@@ -827,7 +827,6 @@ for ID in drifter_ids:
         
         ''' Plot the drifter track, model outputs from fvcom and roms, and the basemap'''           
       
-<<<<<<< HEAD
         ax = fig.add_subplot(2,3,counter) 
         draw_basemap(fig, ax, lonsize, latsize,.1,.1)
         ax.plot(nodes_drifter['lon'],nodes_drifter['lat'],'ro-',label='drifter')
@@ -844,7 +843,6 @@ fig.text(.05, .5, 'Latitude', ha='center', rotation='vertical',size=16)
 plt.show()
 if six_track == 1:
     plt.savefig('plots/6_tracks.png')
-=======
     fig = plt.figure()
     ax = fig.add_subplot(111)
     draw_basemap(fig, ax, lonsize, latsize, lon_incr, lat_incr)
@@ -858,5 +856,3 @@ if six_track == 1:
     plt.ylabel('Latitude')
     plt.show()
     plt.savefig('plots/'+str(ID)+'.png')
-    
->>>>>>> eae345ad303a0af7b6d2abdd36a9353c6be86179
