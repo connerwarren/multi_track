@@ -725,7 +725,7 @@ def draw_basemap(fig, ax, lonsize, latsize, interval_lon=0.5, interval_lat=0.5):
 ''' initialize constants'''
 drifter_ids = ['110410711','139410701','138410701','135410701','110410713','118410701']
 depth = -1
-days = .25
+days = .5
 lat_incr = .1                                                                # Longitude increments displayed on the plot
 lon_incr = .1                                                                # Longitude increments displayed on the plot
 starttime = datetime(2011,5,12,13,0,0,0,pytz.UTC)
