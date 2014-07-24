@@ -23,7 +23,7 @@ from conversions import dm2dd,distance
 from getdata import getdrift
 import calendar
 import pytz
-sys.path.append('../bin')
+sys.path.append('../bin') # comment
 import netCDF4 
 
 class track(object):
