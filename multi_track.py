@@ -717,20 +717,11 @@ def draw_basemap(fig, ax, lonsize, latsize, interval_lon=0.5, interval_lat=0.5):
     dmap.drawcoastlines()
     dmap.fillcontinents(color='grey')
     dmap.drawmapboundary()
-
-##############################################################
-'''''''''''''''''''''''''MAIN PROGRAM'''''''''''''''''''''''''
-##############################################################
-
-''' initialize constants'''
-drifter_ids = ['110410711','139410701','138410701','135410701','110410713','118410701']
-depth = -1
-days = .25
-lat_incr = .1                                                                # Longitude increments displayed on the plot
-lon_incr = .1                                                                # Longitude increments displayed on the plot
-starttime = datetime(2011,5,12,13,0,0,0,pytz.UTC)
-
-for ID in drifter_ids:
+    
+def multi_track(drifter_ids, depth, days, lat_incr, lon_incr, starttime):
+    ''' 
+    This function retrieves all the data needed and returns it all
+    '''
 
     drifter = get_drifter(ID)                                                # Retrive drifter data
     print ID
@@ -786,20 +777,69 @@ for ID in drifter_ids:
         
     lonsize = [lonsize[0]-diff_lon,lonsize[1]+diff_lon]
     latsize = [latsize[0]-diff_lat,latsize[1]+diff_lat]
-           
-    ''' Plot the drifter track, model outputs form fvcom and roms, and the basemap'''           
-      
-    fig = plt.figure()
-    ax = fig.add_subplot(111)
-    draw_basemap(fig, ax, lonsize, latsize, lon_incr, lat_incr)
-    ax.plot(nodes_drifter['lon'],nodes_drifter['lat'],'ro-',label='drifter')
-    ax.plot(nodes_fvcom['lon'],nodes_fvcom['lat'],'yo-',label='fvcom')
-    ax.plot(nodes_roms['lon'],nodes_roms['lat'], 'go-', label='roms')
-    ax.plot(nodes_drifter['lon'][0],nodes_drifter['lat'][0],'c.',label='Startpoint',markersize=20)
-    plt.title('ID: {0}   {1}   {2} days'.format(ID, starttime.strftime("%Y-%m-%d"), days))
-    plt.legend(loc='lower right')
-    plt.xlabel('Longitude')
-    plt.ylabel('Latitude')
-    plt.show()
-    plt.savefig('plots/'+str(ID)+'.png')
     
+    return nodes_drifter, nodes_roms, nodes_fvcom, lonsize, latsize, starttime
+
+##############################################################
+'''''''''''''''''''''''''MAIN PROGRAM'''''''''''''''''''''''''
+##############################################################
+
+''' initialize constants'''
+drifter_ids = ['110410711','139410701','138410701','135410701','110410713','118410701']
+depth = -1
+days = .25
+lat_incr = .1                                                                # Longitude increments displayed on the plot
+lon_incr = .1                                                                # Longitude increments displayed on the plot
+six_track = 1                                                                # Allows for use of the 6_tracks program
+starttime = datetime(2011,5,12,13,0,0,0,pytz.UTC)
+
+''' Setup plot '''
+if six_track == 1:
+    fig = plt.figure(figsize=(20,20))
+    counter = 0
+
+''' Retrieve the data'''
+for ID in drifter_ids:
+    
+    nodes_drifter, nodes_roms, nodes_fvcom, lonsize, latsize, starttime = multi_track(drifter_ids, depth, days, lat_incr, lon_incr, starttime)
+
+    if six_track == 0:
+
+        ''' Plot the drifter track, model outputs form fvcom and roms, and the basemap'''           
+      
+        fig = plt.figure()
+        ax = fig.add_subplot(111)
+        draw_basemap(fig, ax, lonsize, latsize, lon_incr, lat_incr)
+        ax.plot(nodes_drifter['lon'],nodes_drifter['lat'],'ro-',label='drifter')
+        ax.plot(nodes_fvcom['lon'],nodes_fvcom['lat'],'yo-',label='fvcom')
+        ax.plot(nodes_roms['lon'],nodes_roms['lat'], 'go-', label='roms')
+        ax.plot(nodes_drifter['lon'][0],nodes_drifter['lat'][0],'c.',label='Startpoint',markersize=20)
+        plt.title('ID: {0}   {1}   {2} days'.format(ID, starttime.strftime("%Y-%m-%d"), days))
+        plt.legend(loc='lower right')
+        plt.xlabel('Longitude')
+        plt.ylabel('Latitude')
+        plt.show()
+        plt.savefig('plots/'+str(ID)+'_'+str(days)+'_days.png')
+        
+    else: 
+        
+        counter = counter + 1        
+        
+        ''' Plot the drifter track, model outputs from fvcom and roms, and the basemap'''           
+      
+        ax = fig.add_subplot(2,3,counter) 
+        draw_basemap(fig, ax, lonsize, latsize,.1,.1)
+        ax.plot(nodes_drifter['lon'],nodes_drifter['lat'],'ro-',label='drifter')
+        ax.plot(nodes_fvcom['lon'],nodes_fvcom['lat'],'yo-',label='fvcom')
+        ax.plot(nodes_roms['lon'],nodes_roms['lat'], 'go-', label='roms')
+        ax.plot(nodes_drifter['lon'][0],nodes_drifter['lat'][0],'c.',label='Startpoint',markersize=20)
+        plt.title('ID: {0}   {1}   {2} days'.format(ID, starttime.strftime("%Y-%m-%d"), days))
+
+''' Plot the global figure elements'''
+
+plt.legend(loc=(.9,.1))
+fig.text(.5, .05, 'Longitude', ha='center',size=16)
+fig.text(.05, .5, 'Latitude', ha='center', rotation='vertical',size=16)
+plt.show()
+if six_track == 1:
+    plt.savefig('plots/6_tracks.png')
