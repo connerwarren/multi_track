@@ -836,23 +836,9 @@ for ID in drifter_ids:
         plt.title('ID: {0}   {1}   {2} days'.format(ID, starttime.strftime("%Y-%m-%d"), days))
 
 ''' Plot the global figure elements'''
-
-plt.legend(loc=(.9,.1))
-fig.text(.5, .05, 'Longitude', ha='center',size=16)
-fig.text(.05, .5, 'Latitude', ha='center', rotation='vertical',size=16)
-plt.show()
 if six_track == 1:
-    plt.savefig('plots/6_tracks.png')
-    fig = plt.figure()
-    ax = fig.add_subplot(111)
-    draw_basemap(fig, ax, lonsize, latsize, lon_incr, lat_incr)
-    ax.plot(nodes_drifter['lon'],nodes_drifter['lat'],'ro-',label='drifter')
-    ax.plot(nodes_fvcom['lon'],nodes_fvcom['lat'],'yo-',label='fvcom')
-    ax.plot(nodes_roms['lon'],nodes_roms['lat'], 'go-', label='roms')
-    ax.plot(nodes_drifter['lon'][0],nodes_drifter['lat'][0],'c.',label='Startpoint',markersize=20)
-    plt.title('ID: {0}   {1}   {2} days'.format(ID, starttime.strftime("%Y-%m-%d"), days))
-    plt.legend(loc='lower right')
-    plt.xlabel('Longitude')
-    plt.ylabel('Latitude')
+    plt.legend(loc=(.9,.1))
+    fig.text(.5, .05, 'Longitude', ha='center',size=16)
+    fig.text(.05, .5, 'Latitude', ha='center', rotation='vertical',size=16)
     plt.show()
-    plt.savefig('plots/'+str(ID)+'.png')
+    plt.savefig('plots/6_tracks.png')
