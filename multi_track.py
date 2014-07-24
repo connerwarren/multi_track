@@ -23,7 +23,7 @@ from conversions import dm2dd,distance
 from getdata import getdrift
 import calendar
 import pytz
-sys.path.append('../bin')
+sys.path.append('../bin') # comment
 import netCDF4 
 
 class track(object):
@@ -827,6 +827,7 @@ for ID in drifter_ids:
         
         ''' Plot the drifter track, model outputs from fvcom and roms, and the basemap'''           
       
+<<<<<<< HEAD
         ax = fig.add_subplot(2,3,counter) 
         draw_basemap(fig, ax, lonsize, latsize,.1,.1)
         ax.plot(nodes_drifter['lon'],nodes_drifter['lat'],'ro-',label='drifter')
@@ -843,3 +844,19 @@ fig.text(.05, .5, 'Latitude', ha='center', rotation='vertical',size=16)
 plt.show()
 if six_track == 1:
     plt.savefig('plots/6_tracks.png')
+=======
+    fig = plt.figure()
+    ax = fig.add_subplot(111)
+    draw_basemap(fig, ax, lonsize, latsize, lon_incr, lat_incr)
+    ax.plot(nodes_drifter['lon'],nodes_drifter['lat'],'ro-',label='drifter')
+    ax.plot(nodes_fvcom['lon'],nodes_fvcom['lat'],'yo-',label='fvcom')
+    ax.plot(nodes_roms['lon'],nodes_roms['lat'], 'go-', label='roms')
+    ax.plot(nodes_drifter['lon'][0],nodes_drifter['lat'][0],'c.',label='Startpoint',markersize=20)
+    plt.title('ID: {0}   {1}   {2} days'.format(ID, starttime.strftime("%Y-%m-%d"), days))
+    plt.legend(loc='lower right')
+    plt.xlabel('Longitude')
+    plt.ylabel('Latitude')
+    plt.show()
+    plt.savefig('plots/'+str(ID)+'.png')
+    
+>>>>>>> eae345ad303a0af7b6d2abdd36a9353c6be86179
