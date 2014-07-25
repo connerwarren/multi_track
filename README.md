@@ -6,15 +6,9 @@ The program can process multiple drifters and plot them individually or 6 of the
 Information that must be set at the beginning of the program:
 
 drifter_ids (array/list)
-
 depth (integer value, meters)
-
 days (float value)
-
 lat_incr  (float) 
-
 lon_incr  (float)                                                              
-
 six_track (Boolean)                                                               
-
 starttime (datetime)
